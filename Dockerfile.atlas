@@ -2,29 +2,12 @@
 # This append to Layer 1 for quick code update
 # docker build -t tin6150/atlas102 -f Dockerfile.atlas .  | tee LOG.Dockerfile.atlas
 # docker build -t lbnl-science-it/atlas -f Dockerfile.atlas .  | tee Dockerfile.layer2.log 
-# (see DevNotes.rst for alternate details)
 
 # branch specific settings:
 # base: Dockerfile -> Dockerfile.base
 # main: Dockerfile -> Dockerfile.atlas # ie layer 2 that build on top of Dockerfile.base 
-# Can probably alter the .github/workflow/docker-publish.yml, but this will do for now :D
 
-# r-base:3.6.3 was last of 3.x, ca 2019
-# r-base:4.1.1  # ca 2021.10, but gchr built image compatibility problem with aws/ubuntu: R won't run
-#FROM r-base:3.6.3
-#FROM r-base:4.0.3
-#FROM r-base:4.1.1  
-
-# ghcr.io/lbnl-science-it/atlas are automated build using an ubuntu container, which works for CentOS, but in aws/ubuntu R won't start
-# tin6150/atlas are manual build on centos machine and tag/push to dockerhub.  R works in aws/ubuntu.
-
-# FROM ghcr.io/lbnl-science-it/atlas:vBase1.0.4 Debian bullseye (11) R 4.0.4 Rscript works in U16.04 
-#--FROM ghcr.io/lbnl-science-it/atlas:vBase1.0.4 #v1 integration
-#FROM ghcr.io/lbnl-science-it/atlas:base       this worked, but prefer explicit version
-FROM ghcr.io/lbnl-science-it/atlas:vBase1.2.0
-
-# FROM tin6150/atlas:base   # 2022.0204 is now a "locked r-base:4.1.1 with no apt update, R work on aws/ubuntu 16.04, but unsure about tidyverse (yes on apollo)"
-#FROM tin6150/atlas:base
+FROM ghcr.io/lbnl-science-it/atlas-release:main 
 
 MAINTAINER Tin (at) LBL.gov
 
@@ -81,7 +64,7 @@ COPY Dockerfile* /opt/gitrepo/container_layer2/
 COPY . /
 COPY . /opt/gitrepo/atlas/
 
-ENV DBG_ATLAS_CODE_VER "Atlas sfb-v2.0.8 -- Docker.atlas 2023.0328 adopt scen"
+ENV DBG_ATLAS_CODE_VER "Atlas sfb-v2.0.12 -- Docker.atlas 2024.0605"
 ENV DBG_DOCKERFILE Dockerfile.atlas
 ENV TZ America/Los_Angeles 
 
@@ -97,13 +80,7 @@ RUN  cd / \
 
 
 #ENTRYPOINT ["cat", "/_TOP_DIR_OF_CONTAINER_"]
-#ENTRYPOINT [ "/bin/bash" ]
-#ENTRYPOINT [ "/usr/bin/rstudio" ]
 #ENTRYPOINT [ "Rscript", "/opt/gitrepo/atlas/Model_application_hima.R" ]
 ENTRYPOINT [ "/usr/bin/Rscript", "/main.R" ]
-#ENTRYPOINT [ " /usr/lib/R/bin/exec/R", "/main.R" ]
-##ENTRYPOINT [ "R" ]
-# if no defined ENTRYPOINT, default to bash inside the container
-# careful not to cover /home/username (for this container)
 
 # vim: shiftwidth=4 tabstop=4 formatoptions-=cro nolist nu syntax=on
