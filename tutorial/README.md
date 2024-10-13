@@ -1,2 +1,2 @@
-# ATLAS_public_release
-Public release of standalone ATLAS, including run instructions and sample inputs/outputs
+# Example Run
+This folder contains the necessary instruction materials and example run scripts for ATLAS tutorial simulation.
