@@ -7,8 +7,8 @@ This is the public repo for ATLAS code. For full instructions and tutorials on e
 Contacts
 -------
 
-* Ling Jin ljin (at) lbl.gov
-* Tin Ho tin (at) lbl.gov
+* Ling Jin: ljin (at) lbl.gov
+* Tin Ho: tin (at) lbl.gov
 
 License
 -------
